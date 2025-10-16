@@ -16,9 +16,11 @@ Ho inoltre aggiunto una classifica che mostra gli studenti col punteggio più al
 Di seguito riporto degli screenshot esemplificativi dell'applicazione in funzione.
 
 ## Homepage:
-![[screenshots/homepage.png]]
+![Homepage](screenshots/homepage.png)
 
 ## Student View:
+![student login](screenshots/student login.png)
+
 
 
 
