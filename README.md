@@ -19,11 +19,27 @@ Di seguito riporto degli screenshot esemplificativi dell'applicazione in funzion
 ![Homepage](screenshots/homepage.png)
 
 ## Student View:
-![student login](screenshots/student login.png)
+![student login](screenshots/student-login.png)
 
+![student profile](screenshots/student-profile.png)
 
+![student leaderboard](screenshots/student-leaderboard.png)
 
+![student tokens](screenshots/student-tokens.png)
 
+![student settings](screenshots/student-settings.png)
+
+## Professor View:
+![professor signin](screenshots/professor-signin.png)
+
+![professor profile 1](screenshots/professor-profile-1.png)
+![professor profile 2](screenshots/professor-profile-2.png)
+
+![professor classes](screenshots/professor-classes1.png)
+
+![professor tokens](screenshots/professor-tokens.png)
+
+![professor generations](screenshots/professor-generations.png)
 
 ---
 
