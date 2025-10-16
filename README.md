@@ -33,7 +33,6 @@ Di seguito riporto degli screenshot esemplificativi dell'applicazione in funzion
 ![professor signin](screenshots/professor-signin.png)
 
 ![professor profile 1](screenshots/professor-profile-1.png)
-![professor profile 2](screenshots/professor-profile-2.png)
 
 ![professor classes](screenshots/professor-classes1.png)
 
