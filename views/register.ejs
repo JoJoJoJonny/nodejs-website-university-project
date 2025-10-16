@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Register <%=role%></title>
+
+    <!--for bootstrap-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- my style -->
+    <link rel="stylesheet" href="/css/register.css">
+
+</head>
+
+<body>
+    <button class="btn <%if(role === 'stud'){%>btn-student<%}else{%>btn-professor<%}%> hBack" type="button" onclick=location.href="/homepage">
+        <i class="fa-solid fa-arrow-left"></i>
+    </button>
+
+    <div class="container-fluid">
+        <div class="row h-100">
+            <div class="section <%if(role === 'stud'){%>section_student<%}else{%>section_professor<%}%>">
+                <div class="content-overlay">
+                    <h2 class="section-title">
+                        <%if(role === 'stud'){%>
+                            Student
+                        <%}else{%>
+                            Professor
+                        <%}%>
+                    </h2>
+                    <% if(typeof error != "undefined" && error) { %>
+                        <div class="alert alert-danger" role="alert"><%= error %></div>
+                    <% } %>
+                    <form action="/register/<%=role%>" method="POST">
+                        <div class="form-outline mb-4">
+                            <input type="text" name="email" class="form-control" required />
+                            <label class="form-label" for="emailInput">Email</label>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <input type="password" name="password" class="form-control" id="passwordInput"required />
+                            <label class="form-label" for="passwordInput">Password</label>
+                            <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <input type="text" name="name" class="form-control" required />
+                            <label class="form-label" for="nameInput">Name</label>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <input type="text" name="surname" class="form-control" required />
+                            <label class="form-label" for="surnameInput">Surname</label>
+                        </div>
+
+                        <%if(role === 'stud'){%>
+                        <div class="form-outline mb-4">
+                            <input type="text" name="studClass" class="form-control" required />
+                            <label class="form-label" for="studClassInput">Class</label>
+                        </div>
+                        <%}%>
+
+                        <button type="submit" class="btn btn-custom <%if(role === 'stud'){%>btn-student<%}else{%>btn-professor<%}%>">Sign In</button>
+                    </form>
+                    <div class="text-center mt-4">
+                        <small class="text-muted">
+                            Already signed in?
+                            <a href="/login/<%= role %>" class="text-decoration-none">
+                                <%= role === 'stud' ? 'Log In as Student' : role === 'prof' ? 'Log In as Professor' : null %>
+                            </a>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- bootstrap script -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+
+    <!-- for toggle visibility in password input -->
+    <script>
+        const toggle = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('passwordInput');
+
+        toggle.addEventListener('click', () => {
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+            toggle.classList.toggle('fa-eye');
+            toggle.classList.toggle('fa-eye-slash');
+        });
+    </script>
+</body>
+
+
+</html>

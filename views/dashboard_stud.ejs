@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile Students</title>
+
+    <!-- for bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- for icons -->
+    <link href="https://cdn.lineicons.com/5.0/lineicons.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+
+    <!--My style and script-->
+    <link href="/css/leaderboard.css" rel="stylesheet"/>
+    <link href="/css/dashboard_stud.css" rel="stylesheet"/>
+
+</head>
+<body>
+    <div class="wrapper d-flex dashboard-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="user-avatar">
+                    <%if(user.propic!=null){%>
+                    <img src="/uploads/profile_pics/<%=user.propic%>" alt="" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+                    <%}else{%>
+                        <i class="fas fa-user"></i>
+                    <%}%>
+                </div>
+                <h4>Dashboard</h4>
+                <p>Token Manager</p>
+            </div>
+            <ul class="sidebar-nav nav flex-column">
+                <li class="nav-item">
+                    <button class="btn-custom btn-outline-student" id="profile">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn-custom btn-outline-student" id="leaderboard">
+                        <i class="fas fa-ranking-star"></i>
+                        <span>Leaderboard</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn-custom btn-outline-student" id="give_tokens">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>Tokens</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn-custom btn-outline-student" id="transactions">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Transactions</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn-custom btn-outline-student" id="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </button>
+                </li>
+            </ul>
+            <div class="logout-section">
+                <button class="btn btn-logout" onclick="location.href='/logout'">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Log Out</span>
+                </button>
+            </div>
+        </nav>
+
+
+        <main class="main-content" id="content_area">
+
+            <div class="content-header text-center">
+                <h1>Welcome to the Token Manager!</h1>
+            </div>
+
+            <div class="content-card mb-3">
+                <h2>Introduzione al progetto:</h2>
+                <p>Le piattaforme di gestione token digitali permettono la creazione, l'assegnazione e lo scambio di "gettoni" virtuali che possono rappresentare valore, diritti di accesso, oggetti da collezione o altro. </p>
+                <p>Il progetto mira a costruire una piattaforma web semplificata per la gestione e lo scambio di token tra utenti.</p>
+            </div>
+
+            <div class="content-card mb-3">
+                <h2>Livello 1: Gestione e Scambio di un Token Predefinito</h2>
+                <p class="mb-0">L'applicazione web deve permettere agli utenti di:</p>
+                <ul>
+                    <li>Registrarsi al servizio e accedere successivamente.</li>
+                    <li>Esiste un singolo tipo di token predefinito nel sistema (es. "CreditoBase" o "PuntoComunità").</li>
+                    <li>Un ruolo "Amministratore" (potrebbe essere un utente specifico pre-configurato) ha la capacità di "coniare" (creare) nuove unità di questo token e assegnarle a utenti specifici.</li>
+                    <li>Ogni utente può visualizzare il proprio saldo del token predefinito.</li>
+                    <li>Gli utenti possono trasferire quantità del proprio token ad altri utenti registrati sulla piattaforma, specificando l'utente destinatario e la quantità da inviare. Il sistema deve verificare che l'utente mittente possieda una quantità sufficiente di token per il trasferimento.</li>
+                    <li>Ogni utente può visualizzare uno storico delle proprie transazioni (token ricevuti e inviati).</li>
+                </ul>
+            </div>
+
+            <div class="content-card">
+                <h2>Modifiche:</h2>
+                <p>Ho immaginato una piattaforma pensata per incentivare il "buon comportamento", la partecipazione attiva e il completamento dei compiti.</p>
+                <p>I professori possono assegnare token agli studenti che si distinguono per impegno, partecipazione in classe o corretto svolgimento dei compiti.</p>
+                <p>Gli studenti, a loro volta, possono scambiarsi i token liberamente, ad esempio per condividere materiali di studio o aiutarsi tra pari.</p>
+                <p>Tutte le transazioni vengono registrate in una sezione dedicata, così da garantire trasparenza e tracciabilità. </p>
+                <p>Ho inoltre aggiunto una classifica che mostra gli studenti col punteggio più alto: alla fine dell’anno, chi sarà in cima alla leaderboard riceverà un riconoscimento speciale!</p>
+
+            </div>
+
+        </main>
+
+
+
+    </div>
+
+
+    <!-- navbar button style -->
+    <script>
+        //change navbar botton style when pressed
+        document.addEventListener("DOMContentLoaded", () => {
+            const buttons = document.querySelectorAll(".sidebar .btn-custom");
+
+            buttons.forEach(button => {
+                button.addEventListener("click", () => {
+                    //remove "active" to all button
+                    buttons.forEach(btn => {
+                        btn.classList.remove("btn-student");
+                        btn.classList.add("btn-outline-student");
+                    });
+
+                    //add "active" only on the pressed one
+                    button.classList.add("btn-student");
+                    button.classList.remove("btn-outline-student");
+                });
+            });
+        });
+    </script>
+
+    <!-- fetch profile page -->
+    <script>
+        const profile = document.getElementById("profile");
+        const contentArea = document.getElementById("content_area");
+        profile.addEventListener("click", async() => {
+            //change content-area
+            try {
+                const response = await fetch(`/api/profile/stud`);
+                if (!response.ok) throw new Error('HTTP Error!');
+                const data = await response.json();
+
+                //empty the content-area
+                contentArea.innerHTML = '';
+                { //personal information
+                    //content-header and title
+                    const content_header = document.createElement("div");
+                    content_header.className = "content-header";
+                    const title = document.createElement("h1");
+                    title.innerText = "Personal Informations";
+                    content_header.appendChild(title);
+                    contentArea.appendChild(content_header);
+
+                    const row = document.createElement("div");
+                    row.className = "row";
+                    contentArea.appendChild(row);
+                    const col1 = document.createElement("div");
+                    col1.className = "col-md";
+                    row.appendChild(col1);
+
+                    //content-card with personal information
+                    const content_card = document.createElement("div");
+                    content_card.className = "content-card h-100";
+                    col1.appendChild(content_card);
+                    //table
+                    const table = document.createElement("table");
+                    table.className = "table custom-table";
+                    content_card.appendChild(table);
+                    const tr1 = document.createElement("tr");
+                    table.appendChild(tr1);
+                    const tr1td1 = document.createElement("td");
+                    tr1td1.innerText = "Email:";
+                    tr1.appendChild(tr1td1);
+                    const tr1td2 = document.createElement("td");
+                    tr1td2.innerText = data.user.email;
+                    tr1.appendChild(tr1td2);
+                    const tr2 = document.createElement("tr");
+                    table.appendChild(tr2);
+                    const tr2td1 = document.createElement("td");
+                    tr2td1.innerText = "Name:";
+                    tr2.appendChild(tr2td1);
+                    const tr2td2 = document.createElement("td");
+                    tr2td2.innerText = data.user.name;
+                    tr2.appendChild(tr2td2);
+                    const tr3 = document.createElement("tr");
+                    table.appendChild(tr3);
+                    const tr3td1 = document.createElement("td");
+                    tr3td1.innerText = "Surname:";
+                    tr3.appendChild(tr3td1);
+                    const tr3td2 = document.createElement("td");
+                    tr3td2.innerText = data.user.surname;
+                    tr3.appendChild(tr3td2);
+                    const tr4 = document.createElement("tr");
+                    table.appendChild(tr4);
+                    const tr4td1 = document.createElement("td");
+                    tr4td1.innerText = "Class:";
+                    tr4.appendChild(tr4td1);
+                    const tr4td2 = document.createElement("td");
+                    tr4td2.innerText = data.user.class;
+                    tr4.appendChild(tr4td2);
+
+                    //content-card for token
+                    const col2 = document.createElement("div");
+                    col2.className = "col-md";
+                    row.appendChild(col2);
+                    const content_card2 = document.createElement("div");
+                    content_card2.className = "content-card h-100 pb-0";
+                    col2.appendChild(content_card2);
+                    //coin-container
+                    const coin_container = document.createElement("div");
+                    coin_container.className = "coin-container";
+                    content_card2.appendChild(coin_container);
+                    const coin = document.createElement("div");
+                    coin.className = "coin";
+                    coin.id = "tokenCoin";
+                    coin_container.appendChild(coin);
+                    //counter-display
+                    const counter_display = document.createElement("div");
+                    counter_display.className = "counter-display";
+                    content_card2.appendChild(counter_display);
+                    const counter_label = document.createElement("div");
+                    counter_label.className = "counter-label";
+                    counter_label.innerText = "Your Tokens!";
+                    counter_display.appendChild(counter_label);
+                    const counter_value = document.createElement("div");
+                    counter_value.className = "counter-value";
+                    counter_value.id = "tokenCount";
+                    counter_value.innerText = data.user.nTokens;
+                    counter_display.appendChild(counter_value);
+
+
+                    //tokens animations
+                    function animateCoin() {
+                        const coin = document.getElementById('tokenCoin');
+                        coin.style.animation = 'none';
+                        coin.offsetHeight; // Trigger reflow
+                        coin.style.animation = 'bounce 1s ease-in-out, rotate 1s linear';
+                    }
+
+                    function showTokenEffect(text, color) {
+                        const effect = document.createElement('div');
+                        effect.textContent = text;
+                        effect.style.cssText = `
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            color: ${color};
+                            font-size: 2rem;
+                            font-weight: bold;
+                            pointer-events: none;
+                            z-index: 1000;
+                            animation: tokenEffect 1.5s ease-out forwards;
+                        `;
+
+                        // Add keyframe animation
+                        if (!document.querySelector('#tokenEffectStyle')) {
+                            const style = document.createElement('style');
+                            style.id = 'tokenEffectStyle';
+                            style.textContent = `
+                                @keyframes tokenEffect {
+                                    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+                                    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+                                    100% { opacity: 0; transform: translate(-50%, -100%) scale(1); }
+                                }
+                            `;
+                            document.head.appendChild(style);
+                        }
+
+                        document.querySelector('.token-counter-container').appendChild(effect);
+
+                        setTimeout(() => {
+                            effect.remove();
+                        }, 1500);
+                    }
+
+                    document.getElementById('tokenCoin').addEventListener('click', function() {
+                        animateCoin();
+                        showTokenEffect('✨', '#FFD700');
+                    });
+
+
+                }
+
+            } catch (e) {
+                console.error("Error Profile:" + e);
+            }
+        });
+
+        //older version
+        /*
+        const addClassForm = document.getElementById("addClassForm");
+        addClassForm.addEventListener("click", async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(addClassForm);
+            const section = formData.get("section");
+            const subject = formData.get("subject");
+
+            try{
+                const response = await fetch(`/api/add_class`,{
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({section, subject})
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    document.getElementById("addClassFormErrorMessage").innerText = result.error || "Generic Error";
+                    document.getElementById("addClassFormErrorMessage").className = "d-block alert alert-danger";
+                    return;
+                }
+
+                document.getElementById("addClassFormErrorMessage").innerText = "Class Successfully Added!";
+                document.getElementById("addClassFormErrorMessage").className = "d-block success success-message";
+            }catch(e){
+                console.error("Error Add Class:"+e);
+            }
+            */
+    </script>
+
+    <!-- fetch leaderboard page -->
+    <script>
+        const leaderboardBtn = document.getElementById("leaderboard");
+        leaderboardBtn.addEventListener("click", async () => {
+            //change content-area
+            try {
+                const response = await fetch(`/api/leaderboard`);
+                if (!response.ok) throw new Error('HTTP Error!');
+                const json = await response.json();
+                const students = json.students;
+
+                //empty the content area
+                contentArea.innerHTML = ``;
+
+                {//leaderboard
+                    //content-header and title
+                    const content_header = document.createElement("div");
+                    content_header.className = "content-header";
+                    contentArea.appendChild(content_header);
+                    const title = document.createElement("h1");
+                    title.innerText = "Leaderboard";
+                    content_header.appendChild(title);
+
+                    //content-card
+                    const content_card = document.createElement("div");
+                    content_card.className = "content-card";
+                    contentArea.appendChild(content_card);
+
+                    //if there are no students
+                    if (!students || students.length === 0) {
+                        const noStudentsMsg = document.createElement("div");
+                        noStudentsMsg.className = "alert alert-warning";
+                        noStudentsMsg.innerText = "No Students Found!";
+                        content_card.appendChild(noStudentsMsg);
+                    }else{
+                        //podium
+                        const podium_container = document.createElement("div");
+                        podium_container.className = "podium-container";
+                        content_card.appendChild(podium_container);
+                        {//second place
+                            const second_place = document.createElement("div");
+                            second_place.className = "podium_place second-place";
+                            podium_container.appendChild(second_place);
+                            const podium_base = document.createElement("div");
+                            podium_base.className = "podium-base";
+                            second_place.appendChild(podium_base);
+                            const podium_content = document.createElement("div");
+                            podium_content.className = "podium-content";
+                            podium_base.appendChild(podium_content);
+                            const avatar_container = document.createElement("div");
+                            avatar_container.className = "avatar-container";
+                            podium_content.appendChild(avatar_container);
+                            let podium_avatar;
+                            if(students[1].propic!=null){
+                                podium_avatar = document.createElement("img");
+                                podium_avatar.className = "podium-avatar";
+                                podium_avatar.src = "/uploads/profile_pics/"+students[1].propic;
+                            }else{
+                                podium_avatar = document.createElement("i");
+                                podium_avatar.className = "podium-avatar fas fa-user";
+                            }
+                            avatar_container.appendChild(podium_avatar);
+                            const podium_name = document.createElement("div");
+                            podium_name.className = "podium-name";
+                            podium_name.innerText = students[1].name + " " + students[1].surname;
+                            podium_content.appendChild(podium_name);
+                            const podium_email = document.createElement("div");
+                            podium_email.className = "podium-email";
+                            podium_email.innerText = students[1].email;
+                            podium_content.appendChild(podium_email);
+                            const podium_tokens = document.createElement("div");
+                            podium_tokens.className = "podium-tokens";
+                            podium_tokens.innerText = students[1].nTokens;
+                            podium_content.appendChild(podium_tokens);
+                            const position_number = document.createElement("div");
+                            position_number.className = "position-number";
+                            position_number.innerText = "2";
+                            second_place.appendChild(position_number);
+                        }
+                        {//first place
+                            const first_place = document.createElement("div");
+                            first_place.className = "podium_place first-place";
+                            podium_container.appendChild(first_place);
+                            const podium_base = document.createElement("div");
+                            podium_base.className = "podium-base";
+                            first_place.appendChild(podium_base);
+                            const podium_content = document.createElement("div");
+                            podium_content.className = "podium-content";
+                            podium_base.appendChild(podium_content);
+                            const avatar_container = document.createElement("div");
+                            avatar_container.className = "avatar-container";
+                            podium_content.appendChild(avatar_container);
+                            let podium_avatar;
+                            if(students[0].propic!=null){
+                                podium_avatar = document.createElement("img");
+                                podium_avatar.className = "podium-avatar";
+                                podium_avatar.src = "/uploads/profile_pics/"+students[0].propic;
+                            }else{
+                                podium_avatar = document.createElement("i");
+                                podium_avatar.className = "podium-avatar fas fa-user";
+                            }
+                            avatar_container.appendChild(podium_avatar);
+                            const podium_name = document.createElement("div");
+                            podium_name.className = "podium-name";
+                            podium_name.innerText = students[0].name + " " + students[0].surname;
+                            podium_content.appendChild(podium_name);
+                            const podium_email = document.createElement("div");
+                            podium_email.className = "podium-email";
+                            podium_email.innerText = students[0].email;
+                            podium_content.appendChild(podium_email);
+                            const podium_tokens = document.createElement("div");
+                            podium_tokens.className = "podium-tokens";
+                            podium_tokens.innerText = students[0].nTokens;
+                            podium_content.appendChild(podium_tokens);
+                            const position_number = document.createElement("div");
+                            position_number.className = "position-number";
+                            position_number.innerText = "1";
+                            first_place.appendChild(position_number);
+                        }
+                        {//third place
+                            const third_place = document.createElement("div");
+                            third_place.className = "podium_place third-place";
+                            podium_container.appendChild(third_place);
+                            const podium_base = document.createElement("div");
+                            podium_base.className = "podium-base";
+                            third_place.appendChild(podium_base);
+                            const podium_content = document.createElement("div");
+                            podium_content.className = "podium-content";
+                            podium_base.appendChild(podium_content);
+                            const avatar_container = document.createElement("div");
+                            avatar_container.className = "avatar-container";
+                            podium_content.appendChild(avatar_container);
+                            let podium_avatar;
+                            if(students[2].propic!=null){
+                                podium_avatar = document.createElement("img");
+                                podium_avatar.src = "/uploads/profile_pics/"+students[2].propic;
+                                podium_avatar.className = "podium-avatar";
+                            }else{
+                                podium_avatar = document.createElement("i");
+                                podium_avatar.className = "podium-avatar fas fa-user";
+                            }
+                            avatar_container.appendChild(podium_avatar);
+                            const podium_name = document.createElement("div");
+                            podium_name.className = "podium-name";
+                            podium_name.innerText = students[2].name + " " + students[2].surname;
+                            podium_content.appendChild(podium_name);
+                            const podium_email = document.createElement("div");
+                            podium_email.className = "podium-email";
+                            podium_email.innerText = students[2].email;
+                            podium_content.appendChild(podium_email);
+                            const podium_tokens = document.createElement("div");
+                            podium_tokens.className = "podium-tokens";
+                            podium_tokens.innerText = students[2].nTokens;
+                            podium_content.appendChild(podium_tokens);
+                            const position_number = document.createElement("div");
+                            position_number.className = "position-number";
+                            position_number.innerText = "3";
+                            third_place.appendChild(position_number);
+                        }
+                        {//from 4th
+                            const table = document.createElement("table");
+                            content_card.appendChild(table);
+                            table.className = "table leaderboard-custom-table custom-table";
+                            for(let i = 3; i < students.length; i++) {
+                                const tr = document.createElement("tr");
+                                table.appendChild(tr);
+                                const td1 = document.createElement("td");
+                                td1.innerText = i+1;
+                                tr.appendChild(td1);
+                                const td2 = document.createElement("td");
+                                tr.appendChild(td2);
+                                if(students[i].propic!=null) {
+                                    const propic = document.createElement("img");
+                                    propic.src = "/uploads/profile_pics/" + students[i].propic;
+                                    td2.appendChild(propic);
+                                }else{
+                                    const icon = document.createElement("i");
+                                    icon.className = "fas fa-user";
+                                    td2.appendChild(icon);
+                                }
+                                const td3 = document.createElement("td");
+                                td3.innerText = students[i].name + " " + students[i].surname;
+                                tr.appendChild(td3);
+                                const td4 = document.createElement("td");
+                                td4.innerText = students[i].email;
+                                tr.appendChild(td4);
+                                const td5 = document.createElement("td");
+                                td5.innerText = students[i].nTokens;
+                                tr.appendChild(td5);
+                            }
+                        }
+
+                    }
+                }
+            } catch (e) {
+                console.error("Error Leaderboard:" + e);
+            }
+        });
+    </script>
+
+    <!-- fetch tokens page -->
+    <script>
+        const giveTokensBtn = document.getElementById("give_tokens");
+        giveTokensBtn.addEventListener("click", async () => {
+            //empty the page
+            contentArea.innerHTML = '';
+
+            {//give tokens
+                //content-header and title
+                const content_header = document.createElement("div");
+                content_header.className = "content-header";
+                const title = document.createElement("h1");
+                title.innerText = "Give Tokens";
+                content_header.appendChild(title);
+                contentArea.appendChild(content_header);
+
+                //content card
+                const content_card = document.createElement("div");
+                content_card.className = "content-card";
+                contentArea.appendChild(content_card);
+                //form
+                const form = document.createElement("form");
+                form.id = "giveTokensForm";
+                content_card.appendChild(form);
+                const row = document.createElement("div");
+                row.className = "row g-2";
+                form.appendChild(row);
+                const col1 = document.createElement("div");
+                col1.className = "col-md";
+                row.appendChild(col1);
+                const form_floating1 = document.createElement("div");
+                form_floating1.className = "form-floating";
+                col1.appendChild(form_floating1);
+                const input1 = document.createElement("input");
+                input1.type = "text";
+                input1.name = "target";
+                input1.className = "form-control";
+                input1.id = "targetInput";
+                input1.placeholder = "Target Email";
+                input1.required = true;
+                form_floating1.appendChild(input1);
+                const label1 = document.createElement("label");
+                label1.for = "targetInput";
+                label1.className = "form-label";
+                label1.innerText = "Target Email";
+                form_floating1.appendChild(label1);
+                const col2 = document.createElement("div");
+                col2.className = "col-md";
+                row.appendChild(col2);
+                const form_floating2 = document.createElement("div");
+                form_floating2.className = "form-floating";
+                col2.appendChild(form_floating2);
+                const input2 = document.createElement("input");
+                input2.type = "number";
+                input2.name = "amount";
+                input2.className = "form-control";
+                input2.id = "amountInput";
+                input2.placeholder = "Amount";
+                input2.required = true;
+                form_floating2.appendChild(input2);
+                const label2 = document.createElement("label");
+                label2.for = "amountInput";
+                label2.className = "form-label";
+                label2.innerText = "Amount";
+                form_floating2.appendChild(label2);
+                const col3 = document.createElement("div");
+                col3.className = "col-md";
+                row.appendChild(col3);
+                const submit = document.createElement("button");
+                submit.type = "submit";
+                submit.className = "btn-student btn-custom h-100 w-100 align-middle";
+                submit.innerText = "Confirm";
+                col3.appendChild(submit);
+
+                //error message
+                const errorRow = document.createElement("div");
+                errorRow.className = "row g-2 mt-2";
+                content_card.appendChild(errorRow);
+                const errorCol = document.createElement("div");
+                errorCol.className = "col-md";
+                errorRow.appendChild(errorCol);
+                const errorMessage = document.createElement("div");
+                errorMessage.className = "alert alert-danger d-none";
+                errorMessage.id = "giveTokensFormErrorMessage";
+                errorCol.appendChild(errorMessage);
+
+                form.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+
+                    const formData = new FormData(form);
+                    const target = formData.get("target");
+                    const amount = formData.get("amount");
+
+                    try {
+                        const response = await fetch(`/api/stud/give_tokens`, {
+                            method: "POST",
+                            headers: {"Content-Type": "application/json"},
+                            body: JSON.stringify({target, amount})
+                        });
+
+                        const result = await response.json();
+
+                        if (!response.ok) {
+                            errorMessage.innerText = result.error || "Generic Error";
+                            errorMessage.className = "d-block alert alert-danger";
+                            return;
+                        }
+
+                        errorMessage.innerText = "Tokens Successfully Exchanged!";
+                        errorMessage.className = "d-block alert alert-success";
+
+                        // Pulizia input dopo successo
+                        form.reset();
+
+                    } catch (err) {
+                        console.error("Error Give Tokens Class:", err);
+                        errorMessage.innerText = "Internal error!";
+                        errorMessage.className = "d-block alert alert-danger";
+                    }
+                });
+            }
+
+        });
+    </script>
+
+    <!-- fetch transactions page -->
+    <script>
+        const transactionsBtn = document.getElementById("transactions");
+        transactionsBtn.addEventListener("click", async () => {
+            try{
+                const response = await fetch(`/api/transactions`);
+                if(!response.ok) throw new Error('HTTP Error!');
+                const json = await response.json();
+                const transactions = json.transactions;
+                const generations = json.generations;
+                const user = json.user;
+
+                //empty the page
+                contentArea.innerHTML = ``;
+
+                {//transactions
+                    //content-header and title
+                    const content_header = document.createElement("div");
+                    content_header.className = "content-header";
+                    contentArea.appendChild(content_header);
+                    const title = document.createElement("h1");
+                    title.innerText = "Transactions";
+                    content_header.appendChild(title);
+
+                    //content-card
+                    const content_card = document.createElement("div");
+                    content_card.className = "content-card";
+                    contentArea.appendChild(content_card);
+
+                    //if there are no transactions
+                    if (!transactions || transactions.length === 0) {
+                        const noTransactionsMsg = document.createElement("div");
+                        noTransactionsMsg.className = "alert alert-warning";
+                        noTransactionsMsg.innerText = "No Transactions Found!";
+                        content_card.appendChild(noTransactionsMsg);
+                    }else{
+                        //print the transactions if they exists
+                        const table = document.createElement("table");
+                        table.className = "w-100 custom-table-horizontal";
+                        content_card.appendChild(table);
+                        const thead = document.createElement("thead");
+                        table.appendChild(thead);
+                        const firstTr = document.createElement("tr");
+                        thead.appendChild(firstTr);
+                        const th0 = document.createElement("th");
+                        th0.innerText = "Type";
+                        firstTr.appendChild(th0);
+                        const th1 = document.createElement("th");
+                        th1.innerText = "Sender Email";
+                        firstTr.appendChild(th1);
+                        const th2 = document.createElement("th");
+                        th2.innerText = "Receiver Email";
+                        firstTr.appendChild(th2);
+                        const th3 = document.createElement("th");
+                        th3.innerText = "Amount";
+                        firstTr.appendChild(th3);
+                        const th4 = document.createElement("th");
+                        th4.innerText = "Date";
+                        firstTr.appendChild(th4);
+
+                        const tbody = document.createElement("tbody");
+                        table.appendChild(tbody);
+                        transactions.forEach(trans => {
+                           const tr = document.createElement("tr");
+                           tbody.appendChild(tr);
+                           const td0 = document.createElement("td");
+                           const icon = document.createElement("i");
+                           icon.className = "fas fa-exchange-alt";
+                           console.log(user.email);
+                           icon.classList.add(
+                               trans.receiver === user.email ? "trans-in" : "trans-out"
+                           );
+                           td0.appendChild(icon);
+                           tr.appendChild(td0);
+                           const td1 = document.createElement("td");
+                           td1.innerText = trans.sender;
+                           tr.appendChild(td1);
+                           const td2 = document.createElement("td");
+                           td2.innerText = trans.receiver;
+                           tr.appendChild(td2);
+                           const td3 = document.createElement("td");
+                           td3.innerText = trans.nTokens;
+                           tr.appendChild(td3);
+                           const td4 = document.createElement("td");
+                           td4.innerText = trans.date;
+                           tr.appendChild(td4);
+                        });
+                    }
+                }
+
+                {//generations
+                    //content-header and title
+                    const content_header = document.createElement("div");
+                    content_header.className = "content-header";
+                    contentArea.appendChild(content_header);
+                    const title = document.createElement("h1");
+                    title.innerText = "Generations";
+                    content_header.appendChild(title);
+
+                    //content-card
+                    const content_card = document.createElement("div");
+                    content_card.className = "content-card";
+                    contentArea.appendChild(content_card);
+
+                    //if there are no generations
+                    if (!generations || generations.length === 0) {
+                        const noGenerationsMsg = document.createElement("div");
+                        noGenerationsMsg.className = "alert alert-warning";
+                        noGenerationsMsg.innerText = "No Generations Found!";
+                        content_card.appendChild(noGenerationsMsg);
+                    }else{
+                        //print the generations if they exists
+                        const table = document.createElement("table");
+                        table.className = "w-100 custom-table-horizontal";
+                        content_card.appendChild(table);
+                        const thead = document.createElement("thead");
+                        table.appendChild(thead);
+                        const firstTr = document.createElement("tr");
+                        thead.appendChild(firstTr);
+                        const th0 = document.createElement("th");
+                        th0.innerText = "Type";
+                        firstTr.appendChild(th0);
+                        const th1 = document.createElement("th");
+                        th1.innerText = "Sender Email (prof)";
+                        firstTr.appendChild(th1);
+                        const th2 = document.createElement("th");
+                        th2.innerText = "Amount";
+                        firstTr.appendChild(th2);
+                        const th3 = document.createElement("th");
+                        th3.innerText = "Date";
+                        firstTr.appendChild(th3);
+
+                        const tbody = document.createElement("tbody");
+                        table.appendChild(tbody);
+                        generations.forEach(gen => {
+                           const tr = document.createElement("tr");
+                           tbody.appendChild(tr);
+                           const td0 = document.createElement("td");
+                           const icon = document.createElement("i");
+                           icon.className = "fas fa-exchange-alt";
+                           icon.classList.add(
+                               gen.nTokens > 0 ? "trans-in" : "trans-out"
+                           );
+                           td0.appendChild(icon);
+                           tr.appendChild(td0);
+                           const td1 = document.createElement("td");
+                           td1.innerText = gen.sender;
+                           tr.appendChild(td1);
+                           const td2 = document.createElement("td");
+                           td2.innerText = gen.nTokens;
+                           tr.appendChild(td2);
+                           const td3 = document.createElement("td");
+                           td3.innerText = gen.date;
+                           tr.appendChild(td3);
+                        });
+                    }
+                }
+            }catch(e){
+                console.error("Error Transactions:" + e);
+            }
+        });
+    </script>
+
+    <!-- fetch settings page -->
+    <script>
+        const settingsBtn = document.getElementById("settings");
+        settingsBtn.addEventListener("click", async () => {
+            //empty the page
+            contentArea.innerHTML = "";
+
+            {//change informations
+                //content-header and title
+                const content_header = document.createElement("div");
+                content_header.className = "content-header";
+                const title = document.createElement("h1");
+                title.innerText = "Change Personal Informations";
+                content_header.appendChild(title);
+                contentArea.appendChild(content_header);
+
+                //content card
+                const content_card = document.createElement("div");
+                content_card.className = "content-card";
+                contentArea.appendChild(content_card);
+
+                //form
+                const form = document.createElement("form");
+                form.id = "changeInformationsForm";
+                content_card.appendChild(form);
+
+                {
+                    //change name
+                    const row = document.createElement("div");
+                    row.className = "row g-2 mb-2";
+                    form.appendChild(row);
+                    const col1 = document.createElement("div");
+                    col1.className = "col-md";
+                    row.appendChild(col1);
+                    const form_floating1 = document.createElement("div");
+                    form_floating1.className = "form-floating";
+                    col1.appendChild(form_floating1);
+                    const input1 = document.createElement("input");
+                    input1.type = "text";
+                    input1.name = "newName";
+                    input1.className = "form-control";
+                    input1.id = "newNameInput";
+                    input1.placeholder = "New Name";
+                    input1.required = true;
+                    form_floating1.appendChild(input1);
+                    const label1 = document.createElement("label");
+                    label1.for = "newNameInput";
+                    label1.className = "form-label";
+                    label1.innerText = "New Name";
+                    form_floating1.appendChild(label1);
+                    const col2 = document.createElement("div");
+                    col2.className = "col-md";
+                    row.appendChild(col2);
+                    const form_floating2 = document.createElement("div");
+                    form_floating2.className = "form-floating";
+                    col2.appendChild(form_floating2);
+                    const input2 = document.createElement("input");
+                    input2.type = "password";
+                    input2.name = "newNamePassword";
+                    input2.className = "form-control";
+                    input2.id = "newNamePasswordInput";
+                    input2.placeholder = "Password";
+                    input2.required = true;
+                    form_floating2.appendChild(input2);
+                    const label2 = document.createElement("label");
+                    label2.for = "newNamePasswordInput";
+                    label2.className = "form-label";
+                    label2.innerText = "Password";
+                    form_floating2.appendChild(label2);
+                    const col3 = document.createElement("div");
+                    col3.className = "col-md";
+                    row.appendChild(col3);
+                    const submit = document.createElement("button");
+                    submit.type = "button";
+                    submit.className = "btn-student btn-custom h-100 w-100 align-middle";
+                    submit.innerText = "Confirm";
+                    submit.onclick = () => submitChange('name');
+                    col3.appendChild(submit);
+                }
+
+                {
+                    //change name
+                    const row = document.createElement("div");
+                    row.className = "row g-2 mb-2";
+                    form.appendChild(row);
+                    const col1 = document.createElement("div");
+                    col1.className = "col-md";
+                    row.appendChild(col1);
+                    const form_floating1 = document.createElement("div");
+                    form_floating1.className = "form-floating";
+                    col1.appendChild(form_floating1);
+                    const input1 = document.createElement("input");
+                    input1.type = "text";
+                    input1.name = "newSurname";
+                    input1.className = "form-control";
+                    input1.id = "newSurnameInput";
+                    input1.placeholder = "New Surname";
+                    input1.required = true;
+                    form_floating1.appendChild(input1);
+                    const label1 = document.createElement("label");
+                    label1.for = "newSurnameInput";
+                    label1.className = "form-label";
+                    label1.innerText = "New Surname";
+                    form_floating1.appendChild(label1);
+                    const col2 = document.createElement("div");
+                    col2.className = "col-md";
+                    row.appendChild(col2);
+                    const form_floating2 = document.createElement("div");
+                    form_floating2.className = "form-floating";
+                    col2.appendChild(form_floating2);
+                    const input2 = document.createElement("input");
+                    input2.type = "password";
+                    input2.name = "newSurnamePassword";
+                    input2.className = "form-control";
+                    input2.id = "newSurnamePasswordInput";
+                    input2.placeholder = "Password";
+                    input2.required = true;
+                    form_floating2.appendChild(input2);
+                    const label2 = document.createElement("label");
+                    label2.for = "newSurnamePasswordInput";
+                    label2.className = "form-label";
+                    label2.innerText = "Password";
+                    form_floating2.appendChild(label2);
+                    const col3 = document.createElement("div");
+                    col3.className = "col-md";
+                    row.appendChild(col3);
+                    const submit = document.createElement("button");
+                    submit.type = "button";
+                    submit.className = "btn-student btn-custom h-100 w-100 align-middle";
+                    submit.innerText = "Confirm";
+                    submit.onclick = () => submitChange('surname');
+                    col3.appendChild(submit);
+                }
+
+                {
+                    //change name
+                    const row = document.createElement("div");
+                    row.className = "row g-2 mb-2";
+                    form.appendChild(row);
+                    const col1 = document.createElement("div");
+                    col1.className = "col-md";
+                    row.appendChild(col1);
+                    const form_floating1 = document.createElement("div");
+                    form_floating1.className = "form-floating";
+                    col1.appendChild(form_floating1);
+                    const input1 = document.createElement("input");
+                    input1.type = "password";
+                    input1.name = "newPassword";
+                    input1.className = "form-control";
+                    input1.id = "newPasswordInput";
+                    input1.placeholder = "New Password";
+                    input1.required = true;
+                    form_floating1.appendChild(input1);
+                    const label1 = document.createElement("label");
+                    label1.for = "newPasswordInput";
+                    label1.className = "form-label";
+                    label1.innerText = "New Password";
+                    form_floating1.appendChild(label1);
+                    const col2 = document.createElement("div");
+                    col2.className = "col-md";
+                    row.appendChild(col2);
+                    const form_floating2 = document.createElement("div");
+                    form_floating2.className = "form-floating";
+                    col2.appendChild(form_floating2);
+                    const input2 = document.createElement("input");
+                    input2.type = "password";
+                    input2.name = "newPasswordPassword";
+                    input2.className = "form-control";
+                    input2.id = "newPassordPasswordInput";
+                    input2.placeholder = "Password";
+                    input2.required = true;
+                    form_floating2.appendChild(input2);
+                    const label2 = document.createElement("label");
+                    label2.for = "newPasswordPasswordInput";
+                    label2.className = "form-label";
+                    label2.innerText = "Password";
+                    form_floating2.appendChild(label2);
+                    const col3 = document.createElement("div");
+                    col3.className = "col-md";
+                    row.appendChild(col3);
+                    const submit = document.createElement("button");
+                    submit.type = "button";
+                    submit.className = "btn-student btn-custom h-100 w-100 align-middle";
+                    submit.innerText = "Confirm";
+                    submit.onclick = () => submitChange('password');
+                    col3.appendChild(submit);
+                }
+
+                {//change propic
+                    const row = document.createElement("div");
+                    row.className = "row g-2 mb-2";
+                    form.appendChild(row);
+                    const col1 = document.createElement("div");
+                    col1.className = "col-md";
+                    row.appendChild(col1);
+                    const form_floating1 = document.createElement("div");
+                    form_floating1.className = "form-floating";
+                    col1.appendChild(form_floating1);
+                    const input1 = document.createElement("input");
+                    input1.type = "file";
+                    input1.name = "newPropic";
+                    input1.className = "form-control";
+                    input1.id = "newPropicInput";
+                    input1.placeholder = "New Profile Picture";
+                    input1.required = true;
+                    form_floating1.appendChild(input1);
+                    const label1 = document.createElement("label");
+                    label1.for = "newPropicInput";
+                    label1.className = "form-label";
+                    label1.innerText = "New Profile Picture";
+                    form_floating1.appendChild(label1);
+                    const col2 = document.createElement("div");
+                    col2.className = "col-md";
+                    row.appendChild(col2);
+                    const form_floating2 = document.createElement("div");
+                    form_floating2.className = "form-floating";
+                    col2.appendChild(form_floating2);
+                    const input2 = document.createElement("input");
+                    input2.type = "password";
+                    input2.name = "newPropicPassword";
+                    input2.className = "form-control";
+                    input2.id = "newPropicPasswordInput";
+                    input2.placeholder = "Password";
+                    input2.required = true;
+                    form_floating2.appendChild(input2);
+                    const label2 = document.createElement("label");
+                    label2.for = "newPropicPasswordInput";
+                    label2.className = "form-label";
+                    label2.innerText = "Password";
+                    form_floating2.appendChild(label2);
+                    const col3 = document.createElement("div");
+                    col3.className = "col-md";
+                    row.appendChild(col3);
+                    const submit = document.createElement("button");
+                    submit.type = "button";
+                    submit.className = "btn-student btn-custom h-100 w-100 align-middle";
+                    submit.innerText = "Confirm";
+                    submit.onclick = () => submitChange('propic');
+                    col3.appendChild(submit);
+                }
+
+
+                //error message
+                const errorRow = document.createElement("div");
+                errorRow.className = "row g-2 mt-2";
+                content_card.appendChild(errorRow);
+                const errorCol = document.createElement("div");
+                errorCol.className = "col-md";
+                errorRow.appendChild(errorCol);
+                const errorMessage = document.createElement("div");
+                errorMessage.className = "alert alert-danger d-none";
+                errorMessage.id = "changeInformationsErrorMessage";
+                errorCol.appendChild(errorMessage);
+            }
+        });
+
+        async function submitChange(field) {
+            const form = document.getElementById("changeInformationsForm");
+            const msg = document.getElementById("changeInformationsErrorMessage");
+
+            //for propic
+            if(field === 'propic'){
+                const fileInput = form.querySelector('[name="newPropic"]');
+                const file = fileInput.files[0];
+
+                if(!file){
+                    msg.classList.remove("d-none" , "alert-success");
+                    msg.classList.add("alert" , "alert-danger");
+                    msg.innerText = "No file selected!";
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('newPropic', file);
+
+                try{
+                    const response = await fetch(`/api/change_user_info/propic`, {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    const result = await response.json();
+
+                    if(!response.ok){
+                        msg.classList.remove("d-none" , "alert-success");
+                        msg.classList.add("alert" , "alert-danger");
+                        msg.innerText = result.error || "Generic Error!";
+                    }else{
+                        msg.classList.remove("d-none" , "alert-danger");
+                        msg.classList.add("alert" , "alert-success");
+                        msg.innerText = "Change Confirmed! Reload the page to see it!";
+                        fileInput.value = "";
+                    }
+                }catch(err){
+                    console.error("Error Change Personal Info:", err);
+                }
+
+                return;
+            }
+
+
+            //for name, surname, password ecc.
+            const formData = new FormData(form);
+            const data = { field };
+
+            switch(field) {
+                case 'name':
+                    data.value = formData.get("newName");
+                    data.password = formData.get("newNamePassword");
+                    break;
+                case 'surname':
+                    data.value = formData.get("newSurname");
+                    data.password = formData.get("newSurnamePassword");
+                    break;
+                case 'password':
+                    data.value = formData.get("newPassword");
+                    data.password = formData.get("newPasswordPassword");
+                    break;
+            }
+
+            try {
+                const response = await fetch("/api/change_user_info", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    msg.classList.remove("d-none" , "alert-success");
+                    msg.classList.add("alert" , "alert-danger");
+                    msg.innerText = result.error || "Generic Error!";
+                } else {
+                    msg.classList.remove("d-none" , "alert-danger");
+                    msg.classList.add("alert" , "alert-success");
+                    msg.innerText = "Change Confirmed!";
+                    switch(field) {
+                        case 'name':
+                            form.querySelector('[name="newName"]').value = '';
+                            form.querySelector('[name="newNamePassword"]').value = '';
+                            break;
+                        case 'surname':
+                            form.querySelector('[name="newSurname"]').value = '';
+                            form.querySelector('[name="newSurnamePassword"]').value = '';
+                            break;
+                        case 'password':
+                            form.querySelector('[name="newPassword"]').value = '';
+                            form.querySelector('[name="newPasswordPassword"]').value = '';
+                            break;
+                    }
+                }
+            } catch (err) {
+                console.error("Error Change Personal Info:", err);
+            }
+        }
+
+    </script>
+
+
+    <!-- bootstrap's script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="shttps://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+
+
+
+</body>
+</html>

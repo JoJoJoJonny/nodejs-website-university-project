@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile Professors</title>
+
+    <!-- for bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- for icons -->
+    <link href="https://cdn.lineicons.com/5.0/lineicons.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- my style -->
+    <link rel="stylesheet" href="/css/dashboard_prof.css"/>
+
+</head>
+<body>
+    <div class="wrapper d-flex dashboard-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="user-avatar">
+                    <%if(user.propic!=null){%>
+                        <img src="/uploads/profile_pics/<%=user.propic%>" alt="" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+                    <%}else{%>
+                        <i class="fas fa-user"></i>
+                    <%}%>
+                </div>
+                <h4>Dashboard</h4>
+                <p>Token Manager</p>
+            </div>
+            <ul class="sidebar-nav nav flex-column">
+                <li class="nav-item">
+                    <button class="btn-custom btn-outline-professor" id="profile">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn-custom btn-outline-professor" id="classes">
+                        <i class="fas fa-chalkboard"></i>
+                        <span>Classes</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn-custom btn-outline-professor" id="give_tokens">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>Tokens</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn-custom btn-outline-professor" id="generations">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Generations</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn-custom btn-outline-professor" id="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </button>
+                </li>
+            </ul>
+            <div class="logout-section">
+                <button class="btn btn-logout" onclick="location.href='/logout'">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Log Out</span>
+                </button>
+            </div>
+        </nav>
+
+
+        <main class="main-content" id="content_area">
+
+            <div class="content-header text-center">
+                <h1>Welcome to the Token Manager!</h1>
+            </div>
+
+            <div class="content-card mb-3">
+                <h2>Introduzione al progetto:</h2>
+                <p>Le piattaforme di gestione token digitali permettono la creazione, l'assegnazione e lo scambio di "gettoni" virtuali che possono rappresentare valore, diritti di accesso, oggetti da collezione o altro. </p>
+                <p>Il progetto mira a costruire una piattaforma web semplificata per la gestione e lo scambio di token tra utenti.</p>
+            </div>
+
+            <div class="content-card mb-3">
+                <h2>Livello 1: Gestione e Scambio di un Token Predefinito</h2>
+                <p class="mb-0">L'applicazione web deve permettere agli utenti di:</p>
+                <ul>
+                    <li>Registrarsi al servizio e accedere successivamente.</li>
+                    <li>Esiste un singolo tipo di token predefinito nel sistema (es. "CreditoBase" o "PuntoComunità").</li>
+                    <li>Un ruolo "Amministratore" (potrebbe essere un utente specifico pre-configurato) ha la capacità di "coniare" (creare) nuove unità di questo token e assegnarle a utenti specifici.</li>
+                    <li>Ogni utente può visualizzare il proprio saldo del token predefinito.</li>
+                    <li>Gli utenti possono trasferire quantità del proprio token ad altri utenti registrati sulla piattaforma, specificando l'utente destinatario e la quantità da inviare. Il sistema deve verificare che l'utente mittente possieda una quantità sufficiente di token per il trasferimento.</li>
+                    <li>Ogni utente può visualizzare uno storico delle proprie transazioni (token ricevuti e inviati).</li>
+                </ul>
+            </div>
+
+            <div class="content-card">
+                <h2>Modifiche:</h2>
+                <p>Ho immaginato una piattaforma pensata per incentivare il "buon comportamento", la partecipazione attiva e il completamento dei compiti.</p>
+                <p>I professori possono assegnare token agli studenti che si distinguono per impegno, partecipazione in classe o corretto svolgimento dei compiti.</p>
+                <p>Gli studenti, a loro volta, possono scambiarsi i token liberamente, ad esempio per condividere materiali di studio o aiutarsi tra pari.</p>
+                <p>Tutte le transazioni vengono registrate in una sezione dedicata, così da garantire trasparenza e tracciabilità. </p>
+                <p>Ho inoltre aggiunto una classifica che mostra gli studenti col punteggio più alto: alla fine dell’anno, chi sarà in cima alla leaderboard riceverà un riconoscimento speciale!</p>
+
+            </div>
+
+        </main>
+    </div>
+
+
+    <!-- script for navbar button style -->
+    <script>
+        //change navbar botton style when pressed
+        document.addEventListener("DOMContentLoaded", () => {
+            const buttons = document.querySelectorAll(".sidebar .btn-custom");
+
+            buttons.forEach(button => {
+                button.addEventListener("click", () => {
+                    //remove "active" to all button
+                    buttons.forEach(btn => {
+                        btn.classList.remove("btn-professor");
+                        btn.classList.add("btn-outline-professor");
+                    });
+
+                    //add "active" only on the pressed one
+                    button.classList.add("btn-professor");
+                    button.classList.remove("btn-outline-professor");
+                });
+            });
+        });
+    </script>
+
+    <!-- fetch for profile page -->
+    <script>
+        const profile = document.getElementById("profile");
+        const contentArea = document.getElementById("content_area");
+        profile.addEventListener("click", async() => {
+            //change content-area
+            try {
+                const response = await fetch(`/api/profile/prof`);
+                if (!response.ok) throw new Error('HTTP Error!');
+                const data = await response.json();
+
+                //empty the content-area
+                contentArea.innerHTML = '';
+                { //personal information
+                    //content-header and title
+                    const content_header = document.createElement("div");
+                    content_header.className = "content-header";
+                    const title = document.createElement("h1");
+                    title.innerText = "Personal Informations";
+                    content_header.appendChild(title);
+                    contentArea.appendChild(content_header);
+
+                    //content-card
+                    const content_card = document.createElement("div");
+                    content_card.className = "content-card";
+                    contentArea.appendChild(content_card);
+                    //table
+                    const table = document.createElement("table");
+                    table.className = "table custom-table";
+                    const tr1 = document.createElement("tr");
+                    const tr1td1 = document.createElement("td");
+                    tr1td1.innerText = "Email:";
+                    const tr1td2 = document.createElement("td");
+                    tr1td2.innerText = data.user.email;
+                    const tr2 = document.createElement("tr");
+                    const tr2td1 = document.createElement("td");
+                    tr2td1.innerText = "Name:";
+                    const tr2td2 = document.createElement("td");
+                    tr2td2.innerText = data.user.name;
+                    const tr3 = document.createElement("tr");
+                    const tr3td1 = document.createElement("td");
+                    tr3td1.innerText = "Surname:";
+                    const tr3td2 = document.createElement("td");
+                    tr3td2.innerText = data.user.surname;
+                    //appending to the content area
+                    tr1.appendChild(tr1td1);
+                    tr1.appendChild(tr1td2);
+                    tr2.appendChild(tr2td1);
+                    tr2.appendChild(tr2td2);
+                    tr3.appendChild(tr3td1);
+                    tr3.appendChild(tr3td2);
+                    table.appendChild(tr1);
+                    table.appendChild(tr2);
+                    table.appendChild(tr3);
+                    content_card.appendChild(table);
+                }
+
+                {//class information
+                    //content-header and title
+                    const content_header = document.createElement("div");
+                    content_header.className = "content-header";
+                    const title = document.createElement("h1");
+                    title.innerText = "Class Informations";
+                    content_header.appendChild(title);
+                    contentArea.appendChild(content_header);
+
+                    //content-card
+                    const content_card = document.createElement("div");
+                    content_card.className = "content-card";
+                    contentArea.appendChild(content_card);
+
+                    //if there are no classes
+                    if (!data.classes || data.classes.length === 0) {
+                        const noClassesMsg = document.createElement("div");
+                        noClassesMsg.className = "alert alert-warning";
+                        noClassesMsg.innerText = "No Class Found!";
+                        content_card.appendChild(noClassesMsg);
+                    }else{
+                        //print the classes (if they exists)
+                        const table = document.createElement("table");
+                        table.className = "w-100 custom-table-horizontal classes-custom-table";
+                        content_card.appendChild(table);
+                        const thead = document.createElement("thead");
+                        table.appendChild(thead);
+                        const firstTr = document.createElement("tr");
+                        thead.appendChild(firstTr);
+                        const th1 = document.createElement("th");
+                        th1.innerText = "Section";
+                        firstTr.appendChild(th1);
+                        const th2 = document.createElement("th");
+                        th2.innerText = "Subject";
+                        firstTr.appendChild(th2);
+                        const tbody = document.createElement("tbody");
+                        table.appendChild(tbody);
+                        data.classes.forEach(c => {
+                            const tr = document.createElement("tr");
+                            tbody.appendChild(tr);
+                            const td1 = document.createElement("td");
+                            td1.innerText = c.section;
+                            tr.appendChild(td1);
+                            const td2 = document.createElement("td");
+                            td2.innerText = c.subject;
+                            tr.appendChild(td2);
+                        });
+                    }
+                }
+
+                {//add class
+                    //content-header and title
+                    const content_header = document.createElement("div");
+                    content_header.className = "content-header";
+                    const title = document.createElement("h1");
+                    title.innerText = "Add Class";
+                    content_header.appendChild(title);
+                    contentArea.appendChild(content_header);
+
+                    //content-card
+                    const content_card = document.createElement("div");
+                    content_card.className = "content-card";
+                    contentArea.appendChild(content_card);
+                    //form
+                    const form = document.createElement("form");
+                    form.id = "addClassForm";
+                    content_card.appendChild(form);
+                    const row = document.createElement("div");
+                    row.className = "row g-2";
+                    form.appendChild(row);
+                    const col1 = document.createElement("div");
+                    col1.className = "col-md";
+                    row.appendChild(col1);
+                    const form_floating1 = document.createElement("div");
+                    form_floating1.className = "form-floating";
+                    col1.appendChild(form_floating1);
+                    const input1 = document.createElement("input");
+                    input1.type = "text";
+                    input1.name = "section";
+                    input1.className = "form-control";
+                    input1.id = "sectionInput";
+                    input1.placeholder = "Section";
+                    input1.required = true;
+                    form_floating1.appendChild(input1);
+                    const label1 = document.createElement("label");
+                    label1.for = "sectionInput";
+                    label1.className = "form-label";
+                    label1.innerText = "Section";
+                    form_floating1.appendChild(label1);
+                    const col2 = document.createElement("div");
+                    col2.className = "col-md";
+                    row.appendChild(col2);
+                    const form_floating2 = document.createElement("div");
+                    form_floating2.className = "form-floating";
+                    col2.appendChild(form_floating2);
+                    const input2 = document.createElement("input");
+                    input2.type = "text";
+                    input2.name = "subject";
+                    input2.className = "form-control";
+                    input2.id = "subjectInput";
+                    input2.placeholder = "Subject";
+                    input2.required = true;
+                    form_floating2.appendChild(input2);
+                    const label2 = document.createElement("label");
+                    label2.for = "subjectInput";
+                    label2.className = "form-label";
+                    label2.innerText = "Subject";
+                    form_floating2.appendChild(label2);
+                    const col3 = document.createElement("div");
+                    col3.className = "col-md";
+                    row.appendChild(col3);
+                    const submit = document.createElement("button");
+                    submit.type = "submit";
+                    submit.className = "btn-professor btn-custom h-100 w-100 align-middle";
+                    submit.innerText = "Confirm";
+                    col3.appendChild(submit);
+
+                    //error message
+                    const errorRow = document.createElement("div");
+                    errorRow.className = "row g-2 mt-2";
+                    content_card.appendChild(errorRow);
+                    const errorCol = document.createElement("div");
+                    errorCol.className = "col-md";
+                    errorRow.appendChild(errorCol);
+                    const errorMessage = document.createElement("div");
+                    errorMessage.className = "alert alert-danger d-none";
+                    errorMessage.id = "addClassFormErrorMessage";
+                    errorCol.appendChild(errorMessage);
+
+                    form.addEventListener("submit", async (e) => {
+                        e.preventDefault();
+
+                        const formData = new FormData(form);
+                        const section = formData.get("section");
+                        const subject = formData.get("subject");
+
+                        try {
+                            const response = await fetch(`/api/add_class`, {
+                                method: "POST",
+                                headers: {"Content-Type": "application/json"},
+                                body: JSON.stringify({section, subject})
+                            });
+
+                            const result = await response.json();
+
+                            if (!response.ok) {
+                                errorMessage.innerText = result.error || "Generic Error";
+                                errorMessage.className = "d-block alert alert-danger";
+                                return;
+                            }
+
+                            errorMessage.innerText = "Class Successfully Added!";
+                            errorMessage.className = "d-block alert alert-success";
+
+                            // Pulizia input dopo successo
+                            form.reset();
+
+                        } catch (err) {
+                            console.error("Error Add Class:", err);
+                            errorMessage.innerText = "Internal error!";
+                            errorMessage.className = "d-block alert alert-danger";
+                        }
+                    });
+
+                }
+
+            } catch (e) {
+                console.error("Error Profile:" + e);
+            }
+        });
+
+        //older version
+        /*
+        const addClassForm = document.getElementById("addClassForm");
+        addClassForm.addEventListener("click", async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(addClassForm);
+            const section = formData.get("section");
+            const subject = formData.get("subject");
+
+            try{
+                const response = await fetch(`/api/add_class`,{
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({section, subject})
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    document.getElementById("addClassFormErrorMessage").innerText = result.error || "Generic Error";
+                    document.getElementById("addClassFormErrorMessage").className = "d-block alert alert-danger";
+                    return;
+                }
+
+                document.getElementById("addClassFormErrorMessage").innerText = "Class Successfully Added!";
+                document.getElementById("addClassFormErrorMessage").className = "d-block success success-message";
+            }catch(e){
+                console.error("Error Add Class:"+e);
+            }
+            */
+    </script>
+
+    <!-- fetch for classes page -->
+    <script>
+        const classesBtn = document.getElementById("classes");
+        classesBtn.addEventListener("click", async () => {
+            //change content-area
+            try {
+                const response = await fetch(`/api/classes`);
+                if (!response.ok) throw new Error('HTTP Error!');
+                const json = await response.json();
+                const data = json.data;
+
+                //empty the content area
+                contentArea.innerHTML = ``;
+
+                //if there are no classes
+                if (!data || data.length === 0) {
+                    const content_header = document.createElement("div");
+                    content_header.className = "content-header";
+                    contentArea.appendChild(content_header);
+                    const title = document.createElement("h1");
+                    title.innerText = "Classes and Students";
+                    content_header.appendChild(title);
+                    const content_card = document.createElement("div");
+                    content_card.className = "content-card";
+                    contentArea.appendChild(content_card);
+                    const noClassesMsg = document.createElement("div");
+                    noClassesMsg.className = "alert alert-warning";
+                    noClassesMsg.innerText = "No Class Found!";
+                    content_card.appendChild(noClassesMsg);
+                    return; // evita di proseguire se non ci sono classi
+                }
+
+                {//class information
+                    //one header and one card for each class
+                    data.forEach(cls => {
+                        //content-header and title
+                        const container = document.createElement("div");
+                        container.className = "container-fluid px-0 content-header";
+                        contentArea.appendChild(container);
+                        const content_header = document.createElement("div");
+                        content_header.className = "text-center row";
+                        container.appendChild(content_header);
+                        const col1 = document.createElement("div");
+                        col1.className = "col-md";
+                        content_header.appendChild(col1);
+                        const col2 = document.createElement("div");
+                        col2.className = "col-md";
+                        content_header.appendChild(col2);
+                        const section = document.createElement("h1");
+                        section.innerText = cls.section;
+                        col1.appendChild(section);
+                        const subject = document.createElement("h1");
+                        subject.innerText = cls.subject;
+                        col2.appendChild(subject);
+
+                        //content-card
+                        const content_card = document.createElement("div");
+                        content_card.className = "content-card";
+                        contentArea.appendChild(content_card);
+                        //if class is empty, print message
+                        if (!cls.students || cls.students.length === 0) {
+                            const noStudentsMsg = document.createElement("div");
+                            noStudentsMsg.className = "alert alert-warning";
+                            noStudentsMsg.innerText = "No Student in the Class!";
+                            content_card.appendChild(noStudentsMsg);
+                            return;
+                        }
+                        //table
+                        const table = document.createElement("table");
+                        table.className = "w-100 custom-table-horizontal classes-custom-table";
+                        content_card.appendChild(table);
+                        const thead = document.createElement("thead");
+                        table.appendChild(thead);
+                        const firstTr = document.createElement("tr");
+                        thead.appendChild(firstTr);
+                        const th0 = document.createElement("th");
+                        th0.innerText = "Propic:";
+                        firstTr.appendChild(th0);
+                        const th1 = document.createElement("th");
+                        th1.innerText = "Email:";
+                        firstTr.appendChild(th1);
+                        const th2 = document.createElement("th");
+                        th2.innerText = "Name:";
+                        firstTr.appendChild(th2);
+                        const th3 = document.createElement("th");
+                        th3.innerText = "Surname:";
+                        firstTr.appendChild(th3);
+                        const th4 = document.createElement("th");
+                        th4.innerText = "Tokens:";
+                        firstTr.appendChild(th4);
+                        const tbody = document.createElement("tbody");
+                        table.appendChild(tbody);
+                        //data are from here
+                        cls.students.forEach(student => {
+                            const tr = document.createElement("tr");
+                            tbody.appendChild(tr);
+                            const td0 = document.createElement("td");
+                            if(student.propic!=null) {
+                                const propic = document.createElement("img");
+                                propic.src = "/uploads/profile_pics/" + student.propic;
+                                td0.appendChild(propic);
+                            }else{
+                                const icon = document.createElement("i");
+                                icon.className = "fas fa-user";
+                                td0.appendChild(icon);
+                            }
+                            tr.appendChild(td0);
+                            const td1 = document.createElement("td");
+                            td1.innerText = student.email;
+                            tr.appendChild(td1);
+                            const td2 = document.createElement("td");
+                            td2.innerText = student.name;
+                            tr.appendChild(td2);
+                            const td3 = document.createElement("td");
+                            td3.innerText = student.surname;
+                            tr.appendChild(td3);
+                            const td4 = document.createElement("td");
+                            td4.innerText = student.nTokens;
+                            tr.appendChild(td4);
+                        });
+                    });
+                }
+            } catch (e) {
+                console.error("Error Classes:" + e);
+            }
+        });
+    </script>
+
+    <!-- fetch for tokens page -->
+    <script>
+        const giveTokensBtn = document.getElementById("give_tokens");
+        giveTokensBtn.addEventListener("click", async () => {
+            //empty the page
+            contentArea.innerHTML = '';
+
+            {//give tokens
+                //content-header and title
+                const content_header = document.createElement("div");
+                content_header.className = "content-header";
+                const title = document.createElement("h1");
+                title.innerText = "Give Tokens";
+                content_header.appendChild(title);
+                contentArea.appendChild(content_header);
+
+                //content card
+                const content_card = document.createElement("div");
+                content_card.className = "content-card";
+                contentArea.appendChild(content_card);
+                //form
+                const form = document.createElement("form");
+                form.id = "giveTokensForm";
+                content_card.appendChild(form);
+                const row = document.createElement("div");
+                row.className = "row g-2";
+                form.appendChild(row);
+                const col1 = document.createElement("div");
+                col1.className = "col-md";
+                row.appendChild(col1);
+                const form_floating1 = document.createElement("div");
+                form_floating1.className = "form-floating";
+                col1.appendChild(form_floating1);
+                const input1 = document.createElement("input");
+                input1.type = "text";
+                input1.name = "target";
+                input1.className = "form-control";
+                input1.id = "targetInput";
+                input1.placeholder = "Target Email";
+                input1.required = true;
+                form_floating1.appendChild(input1);
+                const label1 = document.createElement("label");
+                label1.for = "targetInput";
+                label1.className = "form-label";
+                label1.innerText = "Target Email";
+                form_floating1.appendChild(label1);
+                const col2 = document.createElement("div");
+                col2.className = "col-md";
+                row.appendChild(col2);
+                const form_floating2 = document.createElement("div");
+                form_floating2.className = "form-floating";
+                col2.appendChild(form_floating2);
+                const input2 = document.createElement("input");
+                input2.type = "number";
+                input2.name = "amount";
+                input2.className = "form-control";
+                input2.id = "amountInput";
+                input2.placeholder = "Amount";
+                input2.required = true;
+                form_floating2.appendChild(input2);
+                const label2 = document.createElement("label");
+                label2.for = "amountInput";
+                label2.className = "form-label";
+                label2.innerText = "Amount";
+                form_floating2.appendChild(label2);
+                const col3 = document.createElement("div");
+                col3.className = "col-md";
+                row.appendChild(col3);
+                const submit = document.createElement("button");
+                submit.type = "submit";
+                submit.className = "btn-professor btn-custom h-100 w-100 align-middle";
+                submit.innerText = "Confirm";
+                col3.appendChild(submit);
+
+                //error message
+                const errorRow = document.createElement("div");
+                errorRow.className = "row g-2 mt-2";
+                content_card.appendChild(errorRow);
+                const errorCol = document.createElement("div");
+                errorCol.className = "col-md";
+                errorRow.appendChild(errorCol);
+                const errorMessage = document.createElement("div");
+                errorMessage.className = "alert alert-danger d-none";
+                errorMessage.id = "giveTokensFormErrorMessage";
+                errorCol.appendChild(errorMessage);
+
+                form.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+
+                    const formData = new FormData(form);
+                    const target = formData.get("target");
+                    const amount = formData.get("amount");
+
+                    try {
+                        const response = await fetch(`/api/prof/give_tokens`, {
+                            method: "POST",
+                            headers: {"Content-Type": "application/json"},
+                            body: JSON.stringify({target, amount})
+                        });
+
+                        const result = await response.json();
+
+                        if (!response.ok) {
+                            errorMessage.innerText = result.error || "Generic Error";
+                            errorMessage.className = "d-block alert alert-danger";
+                            return;
+                        }
+
+                        errorMessage.innerText = "Tokens Successfully Added!";
+                        errorMessage.className = "d-block alert alert-success";
+
+                        // Pulizia input dopo successo
+                        form.reset();
+
+                    } catch (err) {
+                        console.error("Error Give Tokens Class:", err);
+                        errorMessage.innerText = "Internal error!";
+                        errorMessage.className = "d-block alert alert-danger";
+                    }
+                });
+            }
+
+            {//take tokens
+                //content-header and title
+                const content_header = document.createElement("div");
+                content_header.className = "content-header";
+                const title = document.createElement("h1");
+                title.innerText = "Take Tokens";
+                content_header.appendChild(title);
+                contentArea.appendChild(content_header);
+
+                //content card
+                const content_card = document.createElement("div");
+                content_card.className = "content-card";
+                contentArea.appendChild(content_card);
+                //form
+                const form = document.createElement("form");
+                form.id = "takeTokensForm";
+                content_card.appendChild(form);
+                const row = document.createElement("div");
+                row.className = "row g-2";
+                form.appendChild(row);
+                const col1 = document.createElement("div");
+                col1.className = "col-md";
+                row.appendChild(col1);
+                const form_floating1 = document.createElement("div");
+                form_floating1.className = "form-floating";
+                col1.appendChild(form_floating1);
+                const input1 = document.createElement("input");
+                input1.type = "text";
+                input1.name = "target";
+                input1.className = "form-control";
+                input1.id = "targetInput";
+                input1.placeholder = "Target Email";
+                input1.required = true;
+                form_floating1.appendChild(input1);
+                const label1 = document.createElement("label");
+                label1.for = "targetInput";
+                label1.className = "form-label";
+                label1.innerText = "Target Email";
+                form_floating1.appendChild(label1);
+                const col2 = document.createElement("div");
+                col2.className = "col-md";
+                row.appendChild(col2);
+                const form_floating2 = document.createElement("div");
+                form_floating2.className = "form-floating";
+                col2.appendChild(form_floating2);
+                const input2 = document.createElement("input");
+                input2.type = "number";
+                input2.name = "amount";
+                input2.className = "form-control";
+                input2.id = "amountInput";
+                input2.placeholder = "Amount";
+                input2.required = true;
+                form_floating2.appendChild(input2);
+                const label2 = document.createElement("label");
+                label2.for = "amountInput";
+                label2.className = "form-label";
+                label2.innerText = "Amount";
+                form_floating2.appendChild(label2);
+                const col3 = document.createElement("div");
+                col3.className = "col-md";
+                row.appendChild(col3);
+                const submit = document.createElement("button");
+                submit.type = "submit";
+                submit.className = "btn-professor btn-custom h-100 w-100 align-middle";
+                submit.innerText = "Confirm";
+                col3.appendChild(submit);
+
+                //error message
+                const errorRow = document.createElement("div");
+                errorRow.className = "row g-2 mt-2";
+                content_card.appendChild(errorRow);
+                const errorCol = document.createElement("div");
+                errorCol.className = "col-md";
+                errorRow.appendChild(errorCol);
+                const errorMessage = document.createElement("div");
+                errorMessage.className = "alert alert-danger d-none";
+                errorMessage.id = "takeTokensFormErrorMessage";
+                errorCol.appendChild(errorMessage);
+
+                form.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+
+                    const formData = new FormData(form);
+                    const target = formData.get("target");
+                    const amount = formData.get("amount");
+
+                    try {
+                        const response = await fetch(`/api/prof/take_tokens`, {
+                            method: "POST",
+                            headers: {"Content-Type": "application/json"},
+                            body: JSON.stringify({target, amount})
+                        });
+
+                        const result = await response.json();
+
+                        if (!response.ok) {
+                            errorMessage.innerText = result.error || "Generic Error";
+                            errorMessage.className = "d-block alert alert-danger";
+                            return;
+                        }
+
+                        errorMessage.innerText = "Tokens Successfully Removed!";
+                        errorMessage.className = "d-block alert alert-success";
+
+                        // clean the input after success
+                        form.reset();
+
+                    } catch (err) {
+                        console.error("Error Take Tokens Class:", err);
+                        errorMessage.innerText = "Internal error!";
+                        errorMessage.className = "d-block alert alert-danger";
+                    }
+                });
+            }
+        });
+    </script>
+
+    <!-- fetch for generations page -->
+    <script>
+        const generationsBtn = document.getElementById("generations");
+        generationsBtn.addEventListener("click", async () => {
+            try{
+                const response = await fetch(`/api/generations`);
+                if(!response.ok) throw new Error('HTTP Error!');
+                const json = await response.json();
+                const generations = json.generations;
+
+                //empty the page
+                contentArea.innerHTML = ``;
+
+                {//generations
+                    //content-header and title
+                    const content_header = document.createElement("div");
+                    content_header.className = "content-header";
+                    contentArea.appendChild(content_header);
+                    const title = document.createElement("h1");
+                    title.innerText = "Generations";
+                    content_header.appendChild(title);
+
+                    //content-card
+                    const content_card = document.createElement("div");
+                    content_card.className = "content-card";
+                    contentArea.appendChild(content_card);
+
+                    //if there are no generations
+                    if (!generations || generations.length === 0) {
+                        const noGenerationsMsg = document.createElement("div");
+                        noGenerationsMsg.className = "alert alert-warning";
+                        noGenerationsMsg.innerText = "No Generations Found!";
+                        content_card.appendChild(noGenerationsMsg);
+                    }else{
+                        //print the generations if they exists
+                        const table = document.createElement("table");
+                        table.className = "w-100 custom-table-horizontal";
+                        content_card.appendChild(table);
+                        const thead = document.createElement("thead");
+                        table.appendChild(thead);
+                        const firstTr = document.createElement("tr");
+                        thead.appendChild(firstTr);
+                        const th0 = document.createElement("th");
+                        th0.innerText = "Type";
+                        firstTr.appendChild(th0);
+                        const th1 = document.createElement("th");
+                        th1.innerText = "Receiver Email";
+                        firstTr.appendChild(th1);
+                        const th2 = document.createElement("th");
+                        th2.innerText = "Amount";
+                        firstTr.appendChild(th2);
+                        const th3 = document.createElement("th");
+                        th3.innerText = "Date";
+                        firstTr.appendChild(th3);
+
+                        const tbody = document.createElement("tbody");
+                        table.appendChild(tbody);
+                        generations.forEach(gen => {
+                           const tr = document.createElement("tr");
+                           tbody.appendChild(tr);
+                            const td0 = document.createElement("td");
+                            const icon = document.createElement("i");
+                            icon.className = "fas fa-exchange-alt";
+                            icon.classList.add(
+                                gen.nTokens > 0 ? "trans-in" : "trans-out"
+                            );
+                            td0.appendChild(icon);
+                            tr.appendChild(td0);
+                           const td1 = document.createElement("td");
+                           td1.innerText = gen.receiver;
+                           tr.appendChild(td1);
+                           const td2 = document.createElement("td");
+                           td2.innerText = gen.nTokens;
+                           tr.appendChild(td2);
+                           const td3 = document.createElement("td");
+                           td3.innerText = gen.date;
+                           tr.appendChild(td3);
+                        });
+                    }
+                }
+            }catch(e){
+                console.error("Error Generations:" + e);
+            }
+        });
+    </script>
+
+    <!-- fetch for settings page -->
+    <script>
+        const settingsBtn = document.getElementById("settings");
+        settingsBtn.addEventListener("click", async () => {
+            //empty the page
+            contentArea.innerHTML = "";
+
+            {//change informations
+                //content-header and title
+                const content_header = document.createElement("div");
+                content_header.className = "content-header";
+                const title = document.createElement("h1");
+                title.innerText = "Change Personal Informations";
+                content_header.appendChild(title);
+                contentArea.appendChild(content_header);
+
+                //content card
+                const content_card = document.createElement("div");
+                content_card.className = "content-card";
+                contentArea.appendChild(content_card);
+
+                //form
+                const form = document.createElement("form");
+                form.id = "changeInformationsForm";
+                content_card.appendChild(form);
+
+                {//change name
+                    const row = document.createElement("div");
+                    row.className = "row g-2 mb-2";
+                    form.appendChild(row);
+                    const col1 = document.createElement("div");
+                    col1.className = "col-md";
+                    row.appendChild(col1);
+                    const form_floating1 = document.createElement("div");
+                    form_floating1.className = "form-floating";
+                    col1.appendChild(form_floating1);
+                    const input1 = document.createElement("input");
+                    input1.type = "text";
+                    input1.name = "newName";
+                    input1.className = "form-control";
+                    input1.id = "newNameInput";
+                    input1.placeholder = "New Name";
+                    input1.required = true;
+                    form_floating1.appendChild(input1);
+                    const label1 = document.createElement("label");
+                    label1.for = "newNameInput";
+                    label1.className = "form-label";
+                    label1.innerText = "New Name";
+                    form_floating1.appendChild(label1);
+                    const col2 = document.createElement("div");
+                    col2.className = "col-md";
+                    row.appendChild(col2);
+                    const form_floating2 = document.createElement("div");
+                    form_floating2.className = "form-floating";
+                    col2.appendChild(form_floating2);
+                    const input2 = document.createElement("input");
+                    input2.type = "password";
+                    input2.name = "newNamePassword";
+                    input2.className = "form-control";
+                    input2.id = "newNamePasswordInput";
+                    input2.placeholder = "Password";
+                    input2.required = true;
+                    form_floating2.appendChild(input2);
+                    const label2 = document.createElement("label");
+                    label2.for = "newNamePasswordInput";
+                    label2.className = "form-label";
+                    label2.innerText = "Password";
+                    form_floating2.appendChild(label2);
+                    const col3 = document.createElement("div");
+                    col3.className = "col-md";
+                    row.appendChild(col3);
+                    const submit = document.createElement("button");
+                    submit.type = "button";
+                    submit.className = "btn-professor btn-custom h-100 w-100 align-middle";
+                    submit.innerText = "Confirm";
+                    submit.onclick = () => submitChange('name');
+                    col3.appendChild(submit);
+                }
+
+                {//change surname
+                    const row = document.createElement("div");
+                    row.className = "row g-2 mb-2";
+                    form.appendChild(row);
+                    const col1 = document.createElement("div");
+                    col1.className = "col-md";
+                    row.appendChild(col1);
+                    const form_floating1 = document.createElement("div");
+                    form_floating1.className = "form-floating";
+                    col1.appendChild(form_floating1);
+                    const input1 = document.createElement("input");
+                    input1.type = "text";
+                    input1.name = "newSurname";
+                    input1.className = "form-control";
+                    input1.id = "newSurnameInput";
+                    input1.placeholder = "New Surname";
+                    input1.required = true;
+                    form_floating1.appendChild(input1);
+                    const label1 = document.createElement("label");
+                    label1.for = "newSurnameInput";
+                    label1.className = "form-label";
+                    label1.innerText = "New Surname";
+                    form_floating1.appendChild(label1);
+                    const col2 = document.createElement("div");
+                    col2.className = "col-md";
+                    row.appendChild(col2);
+                    const form_floating2 = document.createElement("div");
+                    form_floating2.className = "form-floating";
+                    col2.appendChild(form_floating2);
+                    const input2 = document.createElement("input");
+                    input2.type = "password";
+                    input2.name = "newSurnamePassword";
+                    input2.className = "form-control";
+                    input2.id = "newSurnamePasswordInput";
+                    input2.placeholder = "Password";
+                    input2.required = true;
+                    form_floating2.appendChild(input2);
+                    const label2 = document.createElement("label");
+                    label2.for = "newSurnamePasswordInput";
+                    label2.className = "form-label";
+                    label2.innerText = "Password";
+                    form_floating2.appendChild(label2);
+                    const col3 = document.createElement("div");
+                    col3.className = "col-md";
+                    row.appendChild(col3);
+                    const submit = document.createElement("button");
+                    submit.type = "button";
+                    submit.className = "btn-professor btn-custom h-100 w-100 align-middle";
+                    submit.innerText = "Confirm";
+                    submit.onclick = () => submitChange('surname');
+                    col3.appendChild(submit);
+                }
+
+                {//change password
+                    const row = document.createElement("div");
+                    row.className = "row g-2 mb-2";
+                    form.appendChild(row);
+                    const col1 = document.createElement("div");
+                    col1.className = "col-md";
+                    row.appendChild(col1);
+                    const form_floating1 = document.createElement("div");
+                    form_floating1.className = "form-floating";
+                    col1.appendChild(form_floating1);
+                    const input1 = document.createElement("input");
+                    input1.type = "password";
+                    input1.name = "newPassword";
+                    input1.className = "form-control";
+                    input1.id = "newPasswordInput";
+                    input1.placeholder = "New Password";
+                    input1.required = true;
+                    form_floating1.appendChild(input1);
+                    const label1 = document.createElement("label");
+                    label1.for = "newPasswordInput";
+                    label1.className = "form-label";
+                    label1.innerText = "New Password";
+                    form_floating1.appendChild(label1);
+                    const col2 = document.createElement("div");
+                    col2.className = "col-md";
+                    row.appendChild(col2);
+                    const form_floating2 = document.createElement("div");
+                    form_floating2.className = "form-floating";
+                    col2.appendChild(form_floating2);
+                    const input2 = document.createElement("input");
+                    input2.type = "password";
+                    input2.name = "newPasswordPassword";
+                    input2.className = "form-control";
+                    input2.id = "newPassordPasswordInput";
+                    input2.placeholder = "Password";
+                    input2.required = true;
+                    form_floating2.appendChild(input2);
+                    const label2 = document.createElement("label");
+                    label2.for = "newPasswordPasswordInput";
+                    label2.className = "form-label";
+                    label2.innerText = "Password";
+                    form_floating2.appendChild(label2);
+                    const col3 = document.createElement("div");
+                    col3.className = "col-md";
+                    row.appendChild(col3);
+                    const submit = document.createElement("button");
+                    submit.type = "button";
+                    submit.className = "btn-professor btn-custom h-100 w-100 align-middle";
+                    submit.innerText = "Confirm";
+                    submit.onclick = () => submitChange('password');
+                    col3.appendChild(submit);
+                }
+
+                {//change propic
+                    const row = document.createElement("div");
+                    row.className = "row g-2 mb-2";
+                    form.appendChild(row);
+                    const col1 = document.createElement("div");
+                    col1.className = "col-md";
+                    row.appendChild(col1);
+                    const form_floating1 = document.createElement("div");
+                    form_floating1.className = "form-floating";
+                    col1.appendChild(form_floating1);
+                    const input1 = document.createElement("input");
+                    input1.type = "file";
+                    input1.name = "newPropic";
+                    input1.className = "form-control";
+                    input1.id = "newPropicInput";
+                    input1.placeholder = "New Profile Picture";
+                    input1.required = true;
+                    form_floating1.appendChild(input1);
+                    const label1 = document.createElement("label");
+                    label1.for = "newPropicInput";
+                    label1.className = "form-label";
+                    label1.innerText = "New Profile Picture";
+                    form_floating1.appendChild(label1);
+                    const col2 = document.createElement("div");
+                    col2.className = "col-md";
+                    row.appendChild(col2);
+                    const form_floating2 = document.createElement("div");
+                    form_floating2.className = "form-floating";
+                    col2.appendChild(form_floating2);
+                    const input2 = document.createElement("input");
+                    input2.type = "password";
+                    input2.name = "newPropicPassword";
+                    input2.className = "form-control";
+                    input2.id = "newPropicPasswordInput";
+                    input2.placeholder = "Password";
+                    input2.required = true;
+                    form_floating2.appendChild(input2);
+                    const label2 = document.createElement("label");
+                    label2.for = "newPropicPasswordInput";
+                    label2.className = "form-label";
+                    label2.innerText = "Password";
+                    form_floating2.appendChild(label2);
+                    const col3 = document.createElement("div");
+                    col3.className = "col-md";
+                    row.appendChild(col3);
+                    const submit = document.createElement("button");
+                    submit.type = "button";
+                    submit.className = "btn-professor btn-custom h-100 w-100 align-middle";
+                    submit.innerText = "Confirm";
+                    submit.onclick = () => submitChange('propic');
+                    col3.appendChild(submit);
+                }
+
+
+                //error message
+                const errorRow = document.createElement("div");
+                errorRow.className = "row g-2 mt-2";
+                content_card.appendChild(errorRow);
+                const errorCol = document.createElement("div");
+                errorCol.className = "col-md";
+                errorRow.appendChild(errorCol);
+                const errorMessage = document.createElement("div");
+                errorMessage.className = "alert alert-danger d-none";
+                errorMessage.id = "changeInformationsErrorMessage";
+                errorCol.appendChild(errorMessage);
+            }
+        });
+
+        async function submitChange(field) {
+            const form = document.getElementById("changeInformationsForm");
+            const msg = document.getElementById("changeInformationsErrorMessage");
+
+            //for propic
+            if(field === 'propic'){
+                const fileInput = form.querySelector('[name="newPropic"]');
+                const file = fileInput.files[0];
+
+                if(!file){
+                    msg.classList.remove("d-none" , "alert-success");
+                    msg.classList.add("alert" , "alert-danger");
+                    msg.innerText = "No file selected!";
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('newPropic', file);
+
+                try{
+                    const response = await fetch(`/api/change_user_info/propic`, {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    const result = await response.json();
+
+                    if(!response.ok){
+                        msg.classList.remove("d-none" , "alert-success");
+                        msg.classList.add("alert" , "alert-danger");
+                        msg.innerText = result.error || "Generic Error!";
+                    }else{
+                        msg.classList.remove("d-none" , "alert-danger");
+                        msg.classList.add("alert" , "alert-success");
+                        msg.innerText = "Change Confirmed! Reload the page to see it!";
+                        fileInput.value = "";
+                    }
+                }catch(err){
+                    console.error("Error Change Personal Info:", err);
+                }
+
+                return;
+            }
+
+
+            //for name, surname, password ecc.
+            const formData = new FormData(form);
+            const data = { field };
+
+            switch(field) {
+                case 'name':
+                    data.value = formData.get("newName");
+                    data.password = formData.get("newNamePassword");
+                    break;
+                case 'surname':
+                    data.value = formData.get("newSurname");
+                    data.password = formData.get("newSurnamePassword");
+                    break;
+                case 'password':
+                    data.value = formData.get("newPassword");
+                    data.password = formData.get("newPasswordPassword");
+                    break;
+            }
+
+            try {
+                const response = await fetch("/api/change_user_info", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    msg.classList.remove("d-none" , "alert-success");
+                    msg.classList.add("alert" , "alert-danger");
+                    msg.innerText = result.error || "Generic Error!";
+                } else {
+                    msg.classList.remove("d-none" , "alert-danger");
+                    msg.classList.add("alert" , "alert-success");
+                    msg.innerText = "Change Confirmed!";
+                    switch(field) {
+                        case 'name':
+                            form.querySelector('[name="newName"]').value = '';
+                            form.querySelector('[name="newNamePassword"]').value = '';
+                            break;
+                        case 'surname':
+                            form.querySelector('[name="newSurname"]').value = '';
+                            form.querySelector('[name="newSurnamePassword"]').value = '';
+                            break;
+                        case 'password':
+                            form.querySelector('[name="newPassword"]').value = '';
+                            form.querySelector('[name="newPasswordPassword"]').value = '';
+                            break;
+                    }
+                }
+            } catch (err) {
+                console.error("Error Change Personal Info:", err);
+            }
+        }
+
+    </script>
+
+    <!-- bootstrap's scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="shttps://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+
+</body>
+</html>

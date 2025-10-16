@@ -1,0 +1,473 @@
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*general*/
+:root{
+    --role-primary-color: #007bff;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    background-image: linear-gradient(rgba(0, 123, 255, 0.7), rgba(0, 123, 255, 0.7)), url('/img/student.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow-x: hidden;
+}
+
+.wrapper{
+    display: flex;
+    min-height: 100vh;
+}
+
+.main-content {
+    margin-left: 300px;
+    flex: 1;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    min-height: 100vh;
+}
+
+.content-header {
+    background: rgba(255, 255, 255, 1); /*1 istead of 0.15 if i don't want "glassmorphism"*/
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 2.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.content-header h1 {
+    margin: 0;
+    color: var(--role-primary-color); /*var(--role-primary-color) or white*/
+    font-weight: 700;
+    font-size: 2.5rem;
+    background-clip: text;
+}
+
+.content-card h2 {
+    margin: 0;
+    color: var(--role-primary-color); /*var(--role-primary-color) or white*/
+    font-weight: 700;
+    font-size: 1.5rem;
+    background-clip: text;
+}
+
+.content-card {
+    background: rgba(255, 255, 255, 1); /*1 istead of 0.15 if i don't want "glassmorphism"*/
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 2.5rem;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-custom {
+    width: 100%;
+    /*margin: 0.5rem 0;*/
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    color: white;
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*sidebar*/
+.sidebar {
+    width: 300px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 2px 0 25px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-header {
+    padding: 2.5rem 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-header h4 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.8rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-header p {
+    margin: 0.8rem 0 0 0;
+    opacity: 0.9;
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+.user-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem auto;
+    font-size: 2rem;
+    color: white;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-nav {
+    padding: 2rem 0;
+}
+
+.nav-item {
+    margin: 0.5rem 1.5rem;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.9);
+    padding: 1.2rem 1.5rem;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 0.8rem;
+}
+
+.nav-link:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    transform: translateX(5px) translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.nav-link.active {
+    color: white;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(15px);
+    font-weight: 600;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.nav-link i {
+    margin-right: 1rem;
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*logout*/
+.logout-section {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+}
+
+.btn-logout {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 1rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.btn-logout:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*form control*/
+.form-control {
+    box-shadow: none; /* oppure una nuova ombra */
+}
+
+.form-control:focus {
+    box-shadow: 0 0 5px 2px var(--role-primary-color);
+    border-color: var(--role-primary-color);
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*student*/
+.btn-student{
+    border-radius: 8px;
+    color: white;
+    background-color: var(--role-primary-color);
+    border: 2px solid var(--role-primary-color);
+}
+
+.btn-student:hover {
+    color: var(--role-primary-color);
+    border-color: var(--role-primary-color);
+    background: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+}
+
+.btn-outline-student {
+    color: var(--role-primary-color);
+    border-color: var(--role-primary-color);
+    background-color: white;
+}
+
+.btn-outline-student:hover {
+    background-color: var(--role-primary-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*vertical custom table*/
+.custom-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.custom-table td,
+.custom-table th {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #dddddd;
+}
+
+.custom-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.custom-table td:first-child {
+    background-color: var(--role-primary-color);
+    color: #ffffff;
+    font-weight: bold;
+    width: 30%;
+    white-space: nowrap;
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*horizontal custom table*/
+.custom-table-horizontal {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.custom-table-horizontal thead tr {
+    background-color: var(--role-primary-color);
+    color: #ffffff;
+    text-align: left;
+}
+
+.custom-table-horizontal th,
+.custom-table-horizontal td {
+    padding: 12px 15px;
+}
+
+.custom-table-horizontal tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.custom-table-horizontal tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.custom-table-horizontal tbody tr:last-of-type {
+    border-bottom: 2px solid var(--role-primary-color);
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*for the home button*/
+/*i don't use it anymore, i have the logout now*/
+/*
+.hHome{
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    z-index: 1001;
+
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: white;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.hHome i{
+    font-size: 2rem;
+    width: 60px;
+    text-align: center;
+    z-index: 1002;
+}
+*/
+
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*for-outline*/
+/*i don't use it anymore, i use for-floating now*/
+/*
+.form-outline-gap {
+    margin-right: 3rem !important;
+}
+
+.form-outline-gap:last-child {
+    margin-right: 0 !important;
+}
+*/
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*for the coin in the profile section*/
+.coin-container {
+    position: relative;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.coin {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(145deg, #ffd700, #ffed4a);
+    border-radius: 50%;
+    position: relative;
+    box-shadow:
+            0 0 20px rgba(255, 215, 0, 0.5),
+            inset 0 0 20px rgba(255, 255, 255, 0.3);
+    animation: bounce 2s ease-in-out infinite, rotate 5s linear infinite;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.coin:hover {
+    transform: scale(1.1);
+    animation-play-state: paused;
+}
+
+.coin::before {
+    content: '₹';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 32px;
+    font-weight: bold;
+    color: #b8860b; /*#b8860b*/
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.coin::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-radius: 50%;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0) rotateY(0deg);
+    }
+    40% {
+        transform: translateY(-20px) rotateY(180deg);
+    }
+    60% {
+        transform: translateY(-10px) rotateY(360deg);
+    }
+}
+
+@keyframes rotate {
+    0% { transform: rotateY(0deg); }
+    100% { transform: rotateY(360deg); }
+}
+
+.counter-display {
+    text-align: center;
+    color: var(--role-primary-color);
+    position: relative;
+    z-index: 2;
+}
+
+.counter-label {
+    font-size: 1.2rem;
+    font-weight: 700;
+    opacity: 0.9;
+}
+
+.counter-value {
+    font-size: 3rem;
+    font-weight: bold;
+    text-shadow: 0 2px 10px rgba(0,123,255,0.2);
+    margin: 0;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+/*for transactions and generations*/
+.custom-table-horizontal i.fa-exchange-alt {
+    font-size: 1.2rem;
+}
+
+.custom-table-horizontal .trans-in {
+    color: #44cf6e;
+}
+
+.custom-table-horizontal .trans-out {
+    color: #fb464c;
+}
